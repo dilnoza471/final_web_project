@@ -4,7 +4,7 @@ import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "student")
+@Table(name = "students")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "sid",length = 40)
+    @Column(name = "student_id",length = 40)
     private int sid;
 
     @Column(name = "name",length = 50,nullable = false)
@@ -22,9 +22,7 @@ public class StudentEntity {
     @Column(name = "address",length = 200,nullable = false)
     private String address;
 
-    @Column(name="tel",length = 15,nullable = false)
-    private String tel;
+    @Column(name="level",length = 1,nullable = false) //year of study, e.g. 4-th year student
+    private int tel;
 
-    @Column(name = "nic",length = 15,nullable = false)
-    private String nic;
 }
