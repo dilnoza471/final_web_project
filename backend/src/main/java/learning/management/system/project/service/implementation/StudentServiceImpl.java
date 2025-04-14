@@ -2,12 +2,10 @@ package learning.management.system.project.service.implementation;
 
 import learning.management.system.project.dto.StudentDto;
 import learning.management.system.project.entity.StudentEntity;
-import learning.management.system.project.exception.ResourceNotFoundException;
 import learning.management.system.project.repository.StudentRepository;
 import learning.management.system.project.service.StudentService;
-
+import learning.management.system.project.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,22 +25,22 @@ public class StudentServiceImpl implements StudentService {
                 studentDto.getLevel()
         );
         studentRepository.save(student);
-        return "student"+studentDto.getName()+" adding successfully!!!";
+        return "student"+studentDto.getName()+" added successfully!!!";
     }
 
     @Override
-    public List<StudentDto> getAllstudents() {
+    public List<StudentDto> getAllStudents() {
         List<StudentEntity> getStudents=studentRepository.findAll();
         List<StudentDto> studentDtoList=new ArrayList<>();
         for(StudentEntity student : getStudents){
-            StudentDto studto=new StudentDto(
-                    student.getSid(),
+            StudentDto studentTo=new StudentDto(
+                    student.getStudent_id(),
                     student.getName(),
                     student.getAddress(),
-                    student.getTel(),
-                    student.getNic()
+                    student.getLevel()
+
             );
-            studentDtoList.add(studto);
+            studentDtoList.add(studentTo);
         }
         return studentDtoList;
     }
@@ -50,28 +48,25 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDto addStudent(StudentDto studentDto) {
         StudentEntity student=new StudentEntity(
-                studentDto.getSid(),
+                studentDto.getStudent_id(),
                 studentDto.getName(),
                 studentDto.getAddress(),
-                studentDto.getTel(),
-                studentDto.getNic()
+                studentDto.getLevel()
         );
         studentRepository.save(student);
         return studentDto;
     }
 
     @Override
-    public StudentDto getStudentById(int Sid) {
-        if(studentRepository.existsById(Sid)){
-            StudentEntity stuEntity = studentRepository.getReferenceById(Sid);
-            StudentDto studentDto = new StudentDto(
-                    stuEntity.getSid(),
+    public StudentDto getStudentById(int id) {
+        if(studentRepository.existsById(id)){
+            StudentEntity stuEntity = studentRepository.getReferenceById(id);
+            return new StudentDto(
+                    stuEntity.getStudent_id(),
                     stuEntity.getName(),
                     stuEntity.getAddress(),
-                    stuEntity.getTel(),
-                    stuEntity.getNic()
+                    stuEntity.getLevel()
             );
-            return studentDto;
         }
         else {
             throw new RuntimeException("no student related to input id");
@@ -79,25 +74,26 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDto updateStudent(int sid, StudentDto studentDto) {
-        StudentEntity updateStudent=studentRepository.findById(sid)
-                .orElseThrow(() ->new ResourseNotFoundException("Student not exist with id: " + sid));
+    public StudentDto updateStudent(int id, StudentDto studentDto) throws ResourceNotFoundException {
+        StudentEntity updateStudent=studentRepository.findById(id)
+                .orElseThrow(() ->new ResourceNotFoundException("Student not exist with id: " + id));
 
         updateStudent.setName(studentDto.getName());
-        updateStudent.setTel(studentDto.getTel());
         updateStudent.setAddress(studentDto.getAddress());
-
+        updateStudent.setLevel(studentDto.getLevel());
         studentRepository.save(updateStudent);
         return studentDto;
     }
 
+
+
     @Override
-    public String deleteStudentByid(int sid) {
-        if(studentRepository.existsById(sid)){
-            studentRepository.deleteById(sid);
+    public String deleteStudentById(int id) {
+        if(studentRepository.existsById(id)){
+            studentRepository.deleteById(id);
             return "student deleted successfully!!!";
         }else{
-            throw new RuntimeException("no that kind of id");
+            throw new RuntimeException("no student with that id");
         }
     }
 }

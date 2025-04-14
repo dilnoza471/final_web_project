@@ -1,19 +1,20 @@
 package learning.management.system.project.service;
 
 import learning.management.system.project.dto.StudentDto;
+import learning.management.system.project.exception.ResourceNotFoundException;
 
 import java.util.List;
 
 public interface StudentService {
     String saveStudent(StudentDto studentDto);
 
-    List<StudentDto> getAllstudents();
+    List<StudentDto> getAllStudents();
 
     StudentDto addStudent(StudentDto studentDto);
 
-    StudentDto getStudentById(int Sid);
+    StudentDto getStudentById(int id);
 
-    StudentDto updateStudent(int sid, StudentDto studentDto);
+    StudentDto updateStudent(int id, StudentDto studentDto) throws ResourceNotFoundException;
 
-    String deleteStudentByid(int sid);
+    String deleteStudentById(int id);
 }

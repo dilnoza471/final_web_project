@@ -1,8 +1,10 @@
 package learning.management.system.project.repository;
 
 import learning.management.system.project.entity.StudentEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class StudentRepository {
-    public void save(StudentEntity student) {
-    }
+
+@Repository
+public interface StudentRepository extends JpaRepository<StudentEntity,Integer> {
 }
