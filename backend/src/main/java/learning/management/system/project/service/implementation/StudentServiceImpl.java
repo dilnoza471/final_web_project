@@ -18,7 +18,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public String saveStudent(StudentDto studentDto) {
-        StudentEntity student=new StudentEntity(
+        StudentEntity student= new StudentEntity(
                 studentDto.getStudent_id(),
                 studentDto.getName(),
                 studentDto.getAddress(),

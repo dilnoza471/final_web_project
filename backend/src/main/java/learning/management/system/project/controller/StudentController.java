@@ -2,6 +2,7 @@ package learning.management.system.project.controller;
 
 
 import learning.management.system.project.dto.StudentDto;
+import learning.management.system.project.exception.ResourceNotFoundException;
 import learning.management.system.project.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/student")
+@RequestMapping("/api/student")
 @CrossOrigin
 public class StudentController {
     @Autowired
@@ -18,8 +19,7 @@ public class StudentController {
 
     @PostMapping("/add")
     public String saveStudent(@RequestBody StudentDto studentDto){
-        String message=studentService.saveStudent(studentDto);
-        return message;
+        return studentService.saveStudent(studentDto);
     }
     @PostMapping("save")
     public StudentDto addStudent(@RequestBody StudentDto studentDto){
@@ -28,31 +28,30 @@ public class StudentController {
     @GetMapping(
             path = "/get-all-student"
     )
-    public List<StudentDto> getAllstudents(){
-        List<StudentDto> allstudentDto=studentService.getAllstudents();
-        return allstudentDto;
+    public List<StudentDto> getAllStudents(){
+        return studentService.getAllStudents();
     }
     @GetMapping(
             path = "/get-by-id",
             params = "id"
     )
-    public StudentDto getStudentById(@RequestParam(value = "id") int Sid){
-        return studentService.getStudentById(Sid);
+    public StudentDto getStudentById(@RequestParam(value = "id") int id){
+        return studentService.getStudentById(id);
         //path variable also can use instead of request param//
     }
     @PutMapping(
             path = "/update",
             params = "id"
     )
-    public StudentDto updateStudentById(@RequestParam(value = "id")int Sid,@RequestBody StudentDto studentDto){
+    public StudentDto updateStudentById(@RequestParam(value = "id")int Sid,@RequestBody StudentDto studentDto) throws ResourceNotFoundException {
         return studentService.updateStudent(Sid,studentDto);
     }
     @DeleteMapping(
             path = "delete-student/{id}"
     )
     public String deleteStudent(@PathVariable(value = "id") int Sid){
-        String message=studentService.deleteStudentByid(Sid);
-        return message;
+        return studentService.deleteStudentById(Sid);
     }
+
 
 }

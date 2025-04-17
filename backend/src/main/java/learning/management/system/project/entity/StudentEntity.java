@@ -3,6 +3,8 @@ package learning.management.system.project.entity;
 import lombok.*;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "students")
 @NoArgsConstructor
@@ -24,5 +26,9 @@ public class StudentEntity {
 
     @Column(name="level",length = 1) //year of study, e.g. 4-th year student
     private int level;
+
+    @ManyToMany
+    List<CourseEntity> courses;
+
 
 }
