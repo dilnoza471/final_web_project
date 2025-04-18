@@ -35,7 +35,7 @@ public class StudentController {
             path = "/get-by-id",
             params = "id"
     )
-    public StudentDto getStudentById(@RequestParam(value = "id") int id){
+    public StudentDto getStudentById(@RequestParam(value = "id") Long id){
         return studentService.getStudentById(id);
         //path variable also can use instead of request param//
     }
@@ -43,13 +43,13 @@ public class StudentController {
             path = "/update",
             params = "id"
     )
-    public StudentDto updateStudentById(@RequestParam(value = "id")int Sid,@RequestBody StudentDto studentDto) throws ResourceNotFoundException {
+    public StudentDto updateStudentById(@RequestParam(value = "id")Long Sid,@RequestBody StudentDto studentDto) throws ResourceNotFoundException {
         return studentService.updateStudent(Sid,studentDto);
     }
     @DeleteMapping(
             path = "delete-student/{id}"
     )
-    public String deleteStudent(@PathVariable(value = "id") int Sid){
+    public String deleteStudent(@PathVariable(value = "id") Long Sid){
         return studentService.deleteStudentById(Sid);
     }
 

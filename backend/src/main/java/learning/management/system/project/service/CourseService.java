@@ -1,21 +1,19 @@
 package learning.management.system.project.service;
 
 import learning.management.system.project.dto.CourseDTO;
-import learning.management.system.project.dto.StudentDto;
 import learning.management.system.project.exception.ResourceNotFoundException;
 
 import java.util.List;
 
 public interface CourseService {
-    String saveCourse(CourseDTO courseDto);
 
-    List<StudentDto> getAllCourses();
+    List<CourseDTO> getAllCourses();
 
-    StudentDto addCourse(CourseDTO courseDto);
+    CourseDTO addCourse(CourseDTO courseDto);
 
-    StudentDto getCourseById(int id);
+    CourseDTO getCourseById(Long id) throws ResourceNotFoundException;
 
-    StudentDto updateCourse(int id, CourseDTO courseDto) throws ResourceNotFoundException;
+    CourseDTO updateCourse(Long id, CourseDTO courseDto) throws ResourceNotFoundException;
 
-    String deleteCourseById(int id);
+    String deleteCourseById(Long id);
 }

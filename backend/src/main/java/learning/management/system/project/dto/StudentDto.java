@@ -1,6 +1,10 @@
 package learning.management.system.project.dto;
 
+import learning.management.system.project.entity.EnrollmentEntity;
 import lombok.*;
+
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -8,9 +12,10 @@ import lombok.*;
 @ToString
 public class StudentDto {
 
-    private int student_id;
+    private Long student_id;
     private String name;
     private String address;
-    private int level;
+    private Integer level;
+    private List<EnrollmentEntity> enrollments;
 
 }

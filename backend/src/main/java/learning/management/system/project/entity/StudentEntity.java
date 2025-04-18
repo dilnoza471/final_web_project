@@ -16,7 +16,7 @@ public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "student_id",length = 40)
-    private int student_id;
+    private Long student_id;
 
     @Column(name = "name",length = 50,nullable = false)
     private String name;
@@ -25,10 +25,11 @@ public class StudentEntity {
     private String address;
 
     @Column(name="level",length = 1) //year of study, e.g. 4-th year student
-    private int level;
+    private Integer level;
 
-    @ManyToMany
-    List<CourseEntity> courses;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<EnrollmentEntity> enrollments;
+
 
 
 }

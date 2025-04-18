@@ -11,6 +11,6 @@ public class CourseDTO {
     private String courseCode;     // e.g., "CS201"
     private String name;           // e.g., "Data Structures"
     private int credits;
-    private int finalGrade;
+    private String prof;
 
 }

@@ -16,26 +16,20 @@ public class CourseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "courseID",length = 40)
+    @Column(name = "courseID", length = 40)
     private Long course_id;
-    @Column(name = "courseCode",length = 10,nullable = false)
+    @Column(name = "courseCode", length = 10, nullable = false)
     private String courseCode;     // e.g., "CS201"
-    @Column(name = "name",length = 50,nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;           // e.g., "Data Structures"
-    @Column(name = "credits",nullable = false)
+    @Column(name = "credits", nullable = false)
     private int credits;
-    @Column(name = "finalGrade")
-    private int finalGrade;
-
+    @Column(name = "prof", nullable = false)
+    private String prof;
     // Relationships (to be implemented later)
 
-    // One course can have many homework assignments
-    @ManyToMany(mappedBy = "course", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<StudentEntity> students;
-
-    // You might link grades through enrollments or submissions
-    // e.g., One-to-many from Course -> Grade, or Course -> Enrollment
-
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<EnrollmentEntity> enrollments;
 
 
 }

@@ -12,9 +12,9 @@ public interface StudentService {
 
     StudentDto addStudent(StudentDto studentDto);
 
-    StudentDto getStudentById(int id);
+    StudentDto getStudentById(Long id);
 
-    StudentDto updateStudent(int id, StudentDto studentDto) throws ResourceNotFoundException;
+    StudentDto updateStudent(Long id, StudentDto studentDto) throws ResourceNotFoundException;
 
-    String deleteStudentById(int id);
+    String deleteStudentById(Long id);
 }
