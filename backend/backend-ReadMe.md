@@ -32,7 +32,7 @@ This backend application is a simple Learning Management System built with Sprin
 ---
 
 ## 🏛️ Technologies Used
-- **Java 17**
+- **Java 21**
 - **Spring Boot 3+**
 - **PostgreSQL**
 - **JPA (Hibernate)**
@@ -41,10 +41,9 @@ This backend application is a simple Learning Management System built with Sprin
 
 ## ✅ Additional Notes
 - Use `application.properties` to configure DB and port.
-- All data-fetching relations are set to `FetchType.LAZY` by default.
+- All data-fetching relations are set to `FetchType.Eager` since database is relatively small.
 - DTOs are used for cleaner API data transfer.
 
 ---
 
-Let me know if you want a Postman collection or Swagger documentation next!
 
