@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DiffGenerationConfig">
+    <option name="liquibaseAuthor" value="" />
+    <option name="sourceDbValue" value="9be569a4-17aa-4c1c-80d5-453dfa7d553c" />
+    <option name="sourceDiffType" value="DB" />
+    <option name="targetDbValue" value="9be569a4-17aa-4c1c-80d5-453dfa7d553c" />
+  </component>
+</project>

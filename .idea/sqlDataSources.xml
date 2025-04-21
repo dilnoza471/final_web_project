@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="618accd5-8d64-4904-b524-f4221ded4c13" name="postgres@db.prjbyhwkoofbcjolxunk.supabase.co Mapping">
+      <data-sources db="9be569a4-17aa-4c1c-80d5-453dfa7d553c" ddl="73643130-3dfe-4819-bb08-c21fed66831d" />
+    </mapping>
+    <mapping uuid="e02a87c6-5df0-41ea-adbf-2fd005437f1d" name="postgres@localhost Mapping">
+      <data-sources db="bf0451c1-cf8d-4239-850a-c2391fde1866" ddl="73643130-3dfe-4819-bb08-c21fed66831d" />
+      <scope>
+        <node kind="database" negative="1" />
+      </scope>
+    </mapping>
+  </component>
+</project>
