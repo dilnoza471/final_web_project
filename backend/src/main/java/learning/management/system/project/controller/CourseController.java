@@ -17,14 +17,14 @@ public class CourseController {
     private final CourseService courseService;
 
     // Save a new course
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<CourseDTO> createCourse(@RequestBody CourseDTO courseDTO) {
         CourseDTO result = courseService.addCourse(courseDTO);
         return ResponseEntity.ok(result);
     }
 
     // Get all courses
-    @GetMapping
+    @GetMapping("/get-all-courses")
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
         List<CourseDTO> courses = courseService.getAllCourses();
         return ResponseEntity.ok(courses);

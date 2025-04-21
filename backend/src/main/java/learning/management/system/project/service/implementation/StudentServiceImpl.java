@@ -2,100 +2,108 @@ package learning.management.system.project.service.implementation;
 
 import learning.management.system.project.dto.StudentDto;
 import learning.management.system.project.entity.StudentEntity;
+import learning.management.system.project.exception.ResourceNotFoundException;
 import learning.management.system.project.repository.StudentRepository;
 import learning.management.system.project.service.StudentService;
-import learning.management.system.project.exception.ResourceNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+
     @Autowired
     private StudentRepository studentRepository;
 
     @Override
+    @Transactional
     public String saveStudent(StudentDto studentDto) {
-        StudentEntity student= new StudentEntity(
-                studentDto.getStudent_id(),
-                studentDto.getName(),
-                studentDto.getAddress(),
-                studentDto.getLevel(),
-                studentDto.getEnrollments());
-        return "student"+studentDto.getName()+" added successfully!!!";
+        StudentEntity student = mapToEntity(studentDto);
+        studentRepository.save(student);
+        return "Student '" + studentDto.getName() + "' added successfully!";
     }
 
     @Override
     public List<StudentDto> getAllStudents() {
-        List<StudentEntity> getStudents=studentRepository.findAll();
-        List<StudentDto> studentDtoList=new ArrayList<>();
-        for(StudentEntity student : getStudents){
-            StudentDto studentTo=new StudentDto(
-                    student.getStudent_id(),
-                    student.getName(),
-                    student.getAddress(),
-                    student.getLevel(),
-                    student.getEnrollments()
-
-            );
-            studentDtoList.add(studentTo);
-        }
-        return studentDtoList;
+        List<StudentEntity> students = studentRepository.findAll();
+        return students.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public StudentDto addStudent(StudentDto studentDto) {
-        StudentEntity student=new StudentEntity(
-                studentDto.getStudent_id(),
-                studentDto.getName(),
-                studentDto.getAddress(),
-                studentDto.getLevel(),
-                studentDto.getEnrollments()
-        );
-        studentRepository.save(student);
-        return studentDto;
+        StudentEntity student = mapToEntity(studentDto);
+        StudentEntity savedStudent = studentRepository.save(student);
+        return mapToDto(savedStudent);
     }
 
     @Override
-    public StudentDto getStudentById(Long id) {
-        if(studentRepository.existsById(id)){
-            StudentEntity stuEntity = studentRepository.getReferenceById(id);
-            return new StudentDto(
-                    stuEntity.getStudent_id(),
-                    stuEntity.getName(),
-                    stuEntity.getAddress(),
-                    stuEntity.getLevel(),
-                    stuEntity.getEnrollments()
-            );
-        }
-        else {
-            throw new RuntimeException("no student related to input id");
-        }
+    public StudentDto getStudentById(Long id) throws ResourceNotFoundException {
+        StudentEntity student = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
+        return mapToDto(student);
     }
 
     @Override
+    @Transactional
     public StudentDto updateStudent(Long id, StudentDto studentDto) throws ResourceNotFoundException {
-        StudentEntity updateStudent=studentRepository.findById(id)
-                .orElseThrow(() ->new ResourceNotFoundException("Student not exist with id: " + id));
+        StudentEntity existingStudent = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
 
-        updateStudent.setName(studentDto.getName());
-        updateStudent.setAddress(studentDto.getAddress());
-        updateStudent.setLevel(studentDto.getLevel());
-        studentRepository.save(updateStudent);
-        return studentDto;
+        existingStudent.setName(studentDto.getName());
+        existingStudent.setEmail(studentDto.getEmail());
+        existingStudent.setMajor(studentDto.getMajor());
+        existingStudent.setYear(studentDto.getYear());
+        existingStudent.setCurrent_gpa(studentDto.getCurrent_gpa());
+        existingStudent.setTotal_credits(studentDto.getTotal_credits());
+        existingStudent.setEnrollments(studentDto.getEnrollments());
+        existingStudent.setAssignments(studentDto.getAssignments());
+        StudentEntity updatedStudent = studentRepository.save(existingStudent);
+        return mapToDto(updatedStudent);
     }
 
-
-
     @Override
-    public String deleteStudentById(Long id) {
-        if(studentRepository.existsById(id)){
-            studentRepository.deleteById(id);
-            return "student deleted successfully!!!";
-        }else{
-            throw new RuntimeException("no student with that id");
+    @Transactional
+    public String deleteStudentById(Long id) throws ResourceNotFoundException {
+        if (!studentRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Student not found with id: " + id);
         }
+        studentRepository.deleteById(id);
+        return "Student deleted successfully!";
+    }
+
+    // Helper methods for mapping
+    private StudentDto mapToDto(StudentEntity entity) {
+        return new StudentDto(
+                entity.getId(),
+                entity.getName(),
+                entity.getEmail(),
+                entity.getMajor(),
+                entity.getYear(),
+                entity.getCurrent_gpa(),
+                entity.getTotal_credits(),
+                entity.getEnrollments(),
+                entity.getAssignments()
+        );
+    }
+
+    private StudentEntity mapToEntity(StudentDto dto) {
+        return new StudentEntity(
+                dto.getId(),
+                dto.getName(),
+                dto.getEmail(),
+                dto.getMajor(),
+                dto.getYear(),
+                dto.getCurrent_gpa(),
+                dto.getTotal_credits(),
+                dto.getEnrollments(),
+                dto.getAssignments()
+        );
     }
 }

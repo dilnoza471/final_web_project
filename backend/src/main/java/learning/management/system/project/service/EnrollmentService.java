@@ -43,8 +43,8 @@ public class EnrollmentService {
 
         // Return a response DTO with necessary information
         return new EnrollmentResponseDTO(
-                enrollment.getStudent().getStudent_id(),
-                enrollment.getCourse().getCourse_id(),
+                enrollment.getStudent().getId(),
+                enrollment.getCourse().getId(),
                 enrollment.getEnrollmentDate()
         );
     }
@@ -55,8 +55,8 @@ public class EnrollmentService {
 
         return enrollments.stream()
                 .map(enrollment -> new EnrollmentResponseDTO(
-                        enrollment.getStudent().getStudent_id(),
-                        enrollment.getCourse().getCourse_id(),
+                        enrollment.getStudent().getId(),
+                        enrollment.getCourse().getId(),
                         enrollment.getEnrollmentDate()))
                 .collect(Collectors.toList());
     }

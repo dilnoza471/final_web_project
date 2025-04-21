@@ -20,21 +20,33 @@ public class CourseServiceImpl implements CourseService {
 
     private CourseDTO mapToDTO(CourseEntity entity) {
         CourseDTO dto = new CourseDTO();
-        dto.setCourse_id(entity.getCourse_id());
-        dto.setCourseCode(entity.getCourseCode());
-        dto.setName(entity.getName());
+        dto.setId(entity.getId());
+        dto.setCode(entity.getCode());
+        dto.setTitle(entity.getTitle());
+        dto.setInstructor(entity.getInstructor());
         dto.setCredits(entity.getCredits());
-        dto.setProf(entity.getProf());
+        dto.setLocation(entity.getLocation());
+        dto.setDepartment(entity.getDepartment());
+        dto.setColor(entity.getColor());
+        dto.setAvailable_seats(entity.getAvailable_seats());
+        dto.setEnrollments(entity.getEnrollments());
+        dto.setSessions(entity.getSessions());
         return dto;
     }
 
     private CourseEntity mapToEntity(CourseDTO dto) {
         CourseEntity entity = new CourseEntity();
-        entity.setCourse_id(dto.getCourse_id());
-        entity.setCourseCode(dto.getCourseCode());
-        entity.setName(dto.getName());
+        entity.setId(dto.getId());
+        entity.setCode(dto.getCode());
+        entity.setTitle(dto.getTitle());
+        entity.setInstructor(dto.getInstructor());
         entity.setCredits(dto.getCredits());
-        entity.setProf(dto.getProf());
+        entity.setLocation(dto.getLocation());
+        entity.setDepartment(dto.getDepartment());
+        entity.setColor(dto.getColor());
+        entity.setAvailable_seats(dto.getAvailable_seats());
+        entity.setEnrollments(dto.getEnrollments());
+        entity.setSessions(dto.getSessions());
         return entity;
     }
 
@@ -63,11 +75,16 @@ public class CourseServiceImpl implements CourseService {
         CourseEntity existing = courseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + id));
 
-        existing.setCourseCode(courseDto.getCourseCode());
-        existing.setName(courseDto.getName());
+        existing.setCode(courseDto.getCode());
+        existing.setTitle(courseDto.getTitle());
+        existing.setInstructor(courseDto.getInstructor());
         existing.setCredits(courseDto.getCredits());
-        existing.setProf(courseDto.getProf());
-
+        existing.setLocation(courseDto.getLocation());
+        existing.setDepartment(courseDto.getDepartment());
+        existing.setColor(courseDto.getColor());
+        existing.setAvailable_seats(courseDto.getAvailable_seats());
+        existing.setEnrollments(courseDto.getEnrollments());
+        existing.setSessions(courseDto.getSessions());
         CourseEntity updated = courseRepository.save(existing);
         return mapToDTO(updated);
     }
