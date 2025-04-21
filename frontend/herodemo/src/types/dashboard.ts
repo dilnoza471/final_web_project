@@ -11,21 +11,29 @@ export interface Student {
   avatar?: string
 }
 
+export interface CourseSection {
+  sectionId: string
+  schedule: string
+  location: string
+  availableSeats: number
+  registered: boolean
+}
+
 export interface Course {
   id: number
   code: string
   title: string
   instructor: string
   credits: number
-  schedule: string
+  schedule?: string
   location?: string
   department: string
   status: string
   grade?: string
   gradePercentage?: number
   color?: string
-  availableSeats?: number
-  registered?: boolean
+  sectionId?: string
+  sections?: CourseSection[]
 }
 
 export interface Assignment {

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { BookOpen, Calendar, GraduationCap, BarChart3, Bell, Search } from "lucide-react"
+import { BookOpen, Calendar, GraduationCap, BarChart3, Bell, Search, AlertCircle } from "lucide-react"
 
 import { DashboardHeader } from "./dashboard-header"
 import { DashboardSidebar } from "./dashboard-sidebar"
@@ -10,6 +10,7 @@ import { CourseCard } from "./course-card"
 import { GradesSummary } from "./grades-summary"
 import { UpcomingAssignments } from "./upcoming-assignments"
 import { AvailableCourses } from "./available-courses"
+import { Schedule } from "./schedule"
 import { DashboardContext, DashboardProvider } from "../../context/dashboard-context"
 
 export function StudentDashboard() {
@@ -91,6 +92,16 @@ function DashboardContent() {
                 Grades
               </button>
               <button
+                  onClick={() => setActiveTab("schedule")}
+                  className={`px-4 py-3 text-sm font-medium whitespace-nowrap ${
+                      activeTab === "schedule"
+                          ? "border-b-2 border-blue-500 text-blue-600"
+                          : "text-gray-500 hover:text-gray-700"
+                  }`}
+              >
+                Schedule
+              </button>
+              <button
                   onClick={() => setActiveTab("registration")}
                   className={`px-4 py-3 text-sm font-medium whitespace-nowrap ${
                       activeTab === "registration"
@@ -107,6 +118,7 @@ function DashboardContent() {
             {activeTab === "overview" && <OverviewTab />}
             {activeTab === "courses" && <CoursesTab />}
             {activeTab === "grades" && <GradesTab />}
+            {activeTab === "schedule" && <Schedule />}
             {activeTab === "registration" && <RegistrationTab />}
           </div>
         </div>
@@ -230,18 +242,26 @@ function CoursesTab() {
 
   return (
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {studentData.enrolledCourses.map((course) => (
-              <motion.div
-                  key={course.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * course.id }}
-              >
-                <CourseCard course={course} detailed />
-              </motion.div>
-          ))}
-        </div>
+        {studentData.enrolledCourses.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-8 text-gray-500">
+              <AlertCircle className="h-12 w-12 mb-2 text-gray-300" />
+              <p>You are not registered for any courses yet.</p>
+              <p className="text-sm">Visit the Course Registration tab to register for courses.</p>
+            </div>
+        ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {studentData.enrolledCourses.map((course) => (
+                  <motion.div
+                      key={course.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 * course.id }}
+                  >
+                    <CourseCard course={course} detailed />
+                  </motion.div>
+              ))}
+            </div>
+        )}
       </div>
   )
 }
@@ -351,11 +371,43 @@ function GradesTab() {
   )
 }
 
+// Update the RegistrationTab to show a more informative message about course registration
 function RegistrationTab() {
-  const { availableCourses, registerForCourse } = DashboardContext.useContext()
+  const { availableCourses, registerForCourse, getRegisteredCoursesCount } = DashboardContext.useContext()
+  const registeredCount = getRegisteredCoursesCount()
 
   return (
       <div className="space-y-6">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`p-4 rounded-r border-l-4 ${
+                registeredCount >= 4 ? "bg-amber-50 border-amber-400" : "bg-blue-50 border-blue-400"
+            }`}
+        >
+          <div className="flex">
+            {registeredCount >= 4 ? (
+                <AlertCircle className="h-5 w-5 text-amber-400" />
+            ) : (
+                <Calendar className="h-5 w-5 text-blue-400" />
+            )}
+            <div className="ml-3">
+              <p className="text-sm font-medium">
+                {registeredCount === 5
+                    ? "You have reached the maximum of 5 courses. You cannot register for additional courses."
+                    : registeredCount === 0
+                        ? "You are not registered for any courses. You can register for up to 5 courses."
+                        : `You are registered for ${registeredCount} ${
+                            registeredCount === 1 ? "course" : "courses"
+                        }. You can register for ${5 - registeredCount} more.`}
+              </p>
+              <p className="text-sm mt-1">
+                Each course offers two session options. Choose the one that best fits your schedule.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
