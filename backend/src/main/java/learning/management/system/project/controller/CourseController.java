@@ -31,21 +31,21 @@ public class CourseController {
     }
 
     // Get course by ID
-    @GetMapping("/{id}")
+    @GetMapping("/get-by-id/{id}")
     public ResponseEntity<CourseDTO> getCourseById(@PathVariable Long id) throws ResourceNotFoundException {
         CourseDTO course = courseService.getCourseById(id);
         return ResponseEntity.ok(course);
     }
 
     // Update course by ID
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) throws ResourceNotFoundException {
         CourseDTO result = courseService.updateCourse(id, courseDTO);
         return ResponseEntity.ok(result);
     }
 
     // Delete course by ID
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCourse(@PathVariable Long id) {
         String result = courseService.deleteCourseById(id);
         return ResponseEntity.ok(result);

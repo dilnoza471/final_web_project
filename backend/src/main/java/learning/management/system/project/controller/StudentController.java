@@ -22,7 +22,7 @@ public class StudentController {
     }
 
 
-    @GetMapping(path = "/get-all-student")
+    @GetMapping(path = "/get-all-students")
     public List<StudentDto> getAllStudents(){
         return studentService.getAllStudents();
     }
