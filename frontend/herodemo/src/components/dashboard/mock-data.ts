@@ -1,5 +1,6 @@
-// Create a separate file for mock data to keep the context file cleaner
-import type { Student, Course } from "../../types/dashboard"
+import type { Student, Course } from "../../types/dashboard";
+import axios from 'axios';
+
 
 // Update the mock student data to have only one enrolled course initially
 export const mockStudent: Student = {
@@ -44,9 +45,9 @@ export const mockStudent: Student = {
             description: "Midterm exam covering all topics from weeks 1-7.",
         },
     ],
-}
+};
 
-// Keep the available courses with two section options each
+// Static courses (10 courses) - This will be our default export
 export const mockAvailableCourses: Course[] = [
     {
         id: 101,
@@ -308,4 +309,116 @@ export const mockAvailableCourses: Course[] = [
             },
         ],
     },
-]
+];
+
+/**
+ * Fetches all available courses from the API and formats them to match the expected structure
+ */
+export async function fetchAvailableCourses(): Promise<Course[]> {
+    try {
+        console.log("Fetching all available courses...");
+        const response = await axios.get('http://localhost:8080/api/courses/get-all-courses');
+        const coursesData = response.data;
+        console.log(`Successfully fetched ${coursesData.length} courses`);
+
+        // Process each course to fetch its sessions and format the data
+        const formattedCourses = await Promise.all(
+            coursesData.map(async (course: any): Promise<Course> => {
+                // Fetch sessions for this course
+                let sections = [];
+                try {
+                    console.log(`Fetching sessions for course ${course.id}...`);
+                    const sessionsResponse = await axios.get(`http://localhost:8080/api/courses/${course.id}/sessions`);
+                    const sessionsData = sessionsResponse.data;
+
+                    // Format sessions to match the expected section structure
+                    sections = sessionsData.map((session: any) => {
+                        // Format the schedule string from day and time information
+                        const schedule = `${session.day} ${session.startTime.substring(0, 5)} - ${session.endTime.substring(0, 5)}`;
+
+                        return {
+                            sectionId: `${course.code}-${session.sessionId}`,
+                            schedule: schedule,
+                            location: course.location || "Location not specified",
+                            availableSeats: course.available_seats || 0,
+                            registered: false,
+                        };
+                    });
+
+                    console.log(`Processed ${sections.length} sessions for course ${course.id}`);
+                } catch (error) {
+                    console.error(`Error fetching sessions for course ${course.id}:`, error);
+                    // If sessions fetch fails, create a default section from course data
+                    sections = [{
+                        sectionId: `${course.code}-A`,
+                        schedule: "Schedule not available",
+                        location: course.location || "Location not specified",
+                        availableSeats: course.available_seats || 0,
+                        registered: false
+                    }];
+                }
+
+                // Return the formatted course with its sections
+                return {
+                    id: course.id,
+                    code: course.code,
+                    title: course.title,
+                    instructor: course.instructor,
+                    credits: course.credits,
+                    department: course.department,
+                    status: (course.available_seats > 0) ? "Available" : "Full",
+                    color: course.color || getRandomColor(course.code),
+                    sections: sections
+                };
+            })
+        );
+
+        console.log("All courses processed successfully");
+        return formattedCourses;
+    } catch (error) {
+        console.error('Failed to fetch available courses:', error);
+        // Return the static mock data as fallback
+        return mockAvailableCourses;
+    }
+}
+
+// Helper function to generate a consistent color based on course code
+function getRandomColor(seed: string): string {
+    // Generate a hash from the course code
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+        hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    // Convert to hex color
+    const colors = [
+        "#3b82f6", // blue
+        "#8b5cf6", // purple
+        "#ec4899", // pink
+        "#f59e0b", // amber
+        "#10b981", // emerald
+        "#6366f1", // indigo
+        "#14b8a6", // teal
+        "#f43f5e", // rose
+        "#a855f7", // violet
+        "#0ea5e9", // sky
+    ];
+
+    // Use the hash to select a color
+    const index = Math.abs(hash) % colors.length;
+    return colors[index];
+}
+
+// Try to update the courses with API data, but keep using the static data if it fails
+(async () => {
+    try {
+        const apiCourses = await fetchAvailableCourses();
+        if (apiCourses && apiCourses.length > 0) {
+            // We could update mockAvailableCourses here, but it's better to keep it as a constant
+            // and let the context decide whether to use the API data or the mock data
+            console.log("Successfully fetched courses from API");
+        }
+    } catch (error) {
+        console.error("Error fetching courses:", error);
+    }
+})();
