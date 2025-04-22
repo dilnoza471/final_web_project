@@ -6,18 +6,19 @@ import learning.management.system.project.dto.StudentDto;
 import learning.management.system.project.exception.ResourceNotFoundException;
 import learning.management.system.project.service.AssignmentService;
 import learning.management.system.project.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/student")
-@CrossOrigin
+@RequiredArgsConstructor
 public class StudentController {
-    @Autowired
-    private StudentService studentService;
-    private AssignmentService assignmentService;
+
+    private final StudentService studentService;
+    private final AssignmentService assignmentService;
+
 
     @PostMapping("/add")
     public String saveStudent(@RequestBody StudentDto studentDto){

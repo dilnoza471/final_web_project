@@ -11,7 +11,7 @@ This backend application is a simple Learning Management System built with Sprin
 
 # 📚 Learning Management System API Documentation
 
-## 📘 Student Controller (`/api/students`)
+## 📘 Student Controller (`/api/student`)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
