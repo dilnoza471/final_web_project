@@ -1,8 +1,10 @@
 package learning.management.system.project.controller;
 
 import learning.management.system.project.dto.CourseDTO;
+import learning.management.system.project.dto.SessionDTO;
 import learning.management.system.project.exception.ResourceNotFoundException;
 import learning.management.system.project.service.CourseService;
+import learning.management.system.project.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
+    private final SessionService sessionService;
 
     // Save a new course
     @PostMapping("/add")
@@ -49,5 +52,12 @@ public class CourseController {
     public ResponseEntity<String> deleteCourse(@PathVariable Long id) {
         String result = courseService.deleteCourseById(id);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/{courseId}/sessions")
+    public List<SessionDTO> getSessionsByCourseId(@PathVariable Long courseId) {
+        // Fetch sessions of a course using the session service
+
+        return sessionService.getSessionsByCourseId(courseId);
     }
 }

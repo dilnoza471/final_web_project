@@ -22,6 +22,5 @@ public class CourseDTO {
     private Integer available_seats;
 
 
-    private List<EnrollmentEntity> enrollments;
     private List<SessionEntity> sessions;
 }

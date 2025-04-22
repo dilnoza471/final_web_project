@@ -29,8 +29,6 @@ public class CourseServiceImpl implements CourseService {
         dto.setDepartment(entity.getDepartment());
         dto.setColor(entity.getColor());
         dto.setAvailable_seats(entity.getAvailable_seats());
-        dto.setEnrollments(entity.getEnrollments());
-        dto.setSessions(entity.getSessions());
         return dto;
     }
 
@@ -45,8 +43,6 @@ public class CourseServiceImpl implements CourseService {
         entity.setDepartment(dto.getDepartment());
         entity.setColor(dto.getColor());
         entity.setAvailable_seats(dto.getAvailable_seats());
-        entity.setEnrollments(dto.getEnrollments());
-        entity.setSessions(dto.getSessions());
         return entity;
     }
 
@@ -83,8 +79,6 @@ public class CourseServiceImpl implements CourseService {
         existing.setDepartment(courseDto.getDepartment());
         existing.setColor(courseDto.getColor());
         existing.setAvailable_seats(courseDto.getAvailable_seats());
-        existing.setEnrollments(courseDto.getEnrollments());
-        existing.setSessions(courseDto.getSessions());
         CourseEntity updated = courseRepository.save(existing);
         return mapToDTO(updated);
     }

@@ -38,8 +38,6 @@ public class CourseEntity {
 
     // Relationships (to be implemented later)
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<EnrollmentEntity> enrollments;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<SessionEntity> sessions = new ArrayList<>();
 

@@ -49,9 +49,9 @@ public class EnrollmentService {
         );
     }
 
-    // Method to get all enrollments
-    public List<EnrollmentResponseDTO> getAllEnrollments() {
-        List<EnrollmentEntity> enrollments = enrollmentRepository.findAll();
+    // Method to get all enrollments by student id
+    public List<EnrollmentResponseDTO> getEnrollmentsByStudentId(Long studentId) {
+        List<EnrollmentEntity> enrollments = enrollmentRepository.findByStudentId(studentId);
 
         return enrollments.stream()
                 .map(enrollment -> new EnrollmentResponseDTO(
@@ -60,4 +60,5 @@ public class EnrollmentService {
                         enrollment.getEnrollmentDate()))
                 .collect(Collectors.toList());
     }
+
 }

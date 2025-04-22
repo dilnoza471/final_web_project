@@ -9,25 +9,36 @@ This backend application is a simple Learning Management System built with Sprin
 
 ### 👩‍🎓 Student Endpoints
 
-| Method | Endpoint                                | Description                                  | Request Params/Body             |
-|--------|------------------------------------------|----------------------------------------------|----------------------------------|
-| GET    | `/api/student/get-all-students`          | Fetch all students                           | -                                |
-| GET    | `/api/student/get-by-id`                 | Fetch student by ID                          | `id` as request parameter        |
-| POST   | `/api/student/add`                       | Add a new student                            | Student object in request body   |
-| PUT    | `/api/student/update`                    | Update an existing student                   | `id` as request parameter + body |
-| DELETE | `/api/student/delete-student/{id}`       | Delete student by ID                         | `id` as path variable            |
+# 📚 Learning Management System API Documentation
 
-### 📚 Course Endpoints
+## 📘 Student Controller (`/api/students`)
 
-| Method | Endpoint                                | Description                                  | Request Params/Body             |
-|--------|------------------------------------------|----------------------------------------------|----------------------------------|
-| GET    | `/api/courses/get-all-courses`           | Fetch all courses                            | -                                |
-| GET    | `/api/courses/get-by-id/{id}`            | Fetch course by ID                           | `id` as path variable            |
-| POST   | `/api/courses/add`                       | Add a new course                             | Course object in request body    |
-| PUT    | `/api/courses/update/{id}`               | Update a course                              | `id` as path variable + body     |
-| DELETE | `/api/student/delete/{id}`               | Delete student by ID (duplicate endpoint)    | `id` as path variable            |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/add` | Add a new student |
+| `GET` | `/get-all-students` | Get a list of all students |
+| `GET` | `/get-by-id?id={id}` | Get student by ID (via query param) |
+| `PUT` | `/update?id={id}` | Update student by ID (via query param) |
+| `DELETE` | `/delete-student/{id}` | Delete student by ID |
+| `GET` | `/get-hw/{id}` | Get all assignments of a student by ID |
 
-> Note: The endpoint `/api/student/delete/{id}` seems to be a duplicate of `/api/student/delete-student/{id}`. Consider consolidating.
+## 📘 Enrollment Controller (`/api/enrollments`)
+
+| Method | Endpoint          | Description |
+|--------|-------------------|-------------|
+| `POST` | `/register`       | Enroll a student in a course |
+| `GET` | `/get-by-id/{id}` | Get all enrollments of a student by ID |
+
+## 📘 Course Controller (`/api/courses`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/add` | Add a new course |
+| `GET` | `/get-all-courses` | Get a list of all courses |
+| `GET` | `/get-by-id/{id}` | Get course by ID |
+| `PUT` | `/update/{id}` | Update course by ID |
+| `DELETE` | `/delete/{id}` | Delete course by ID |
+| `GET` | `/{courseId}/sessions` | Get sessions of a specific course |
 
 ---
 

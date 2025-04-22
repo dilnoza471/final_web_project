@@ -16,14 +16,14 @@ public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<EnrollmentResponseDTO> enrollStudent(@RequestBody EnrollmentRequestDTO request) {
         EnrollmentResponseDTO response = enrollmentService.enrollStudent(request);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<EnrollmentResponseDTO>> getAllEnrollments() {
-        return ResponseEntity.ok(enrollmentService.getAllEnrollments());
+    @GetMapping("/get-by-id/{id}")
+    public ResponseEntity<List<EnrollmentResponseDTO>> getEnrollmentsByStudentId(@PathVariable Long id) {
+        return ResponseEntity.ok(enrollmentService.getEnrollmentsByStudentId(id));
     }
 }

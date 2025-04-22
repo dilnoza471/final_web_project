@@ -1,8 +1,10 @@
 package learning.management.system.project.controller;
 
 
+import learning.management.system.project.dto.AssignmentDTO;
 import learning.management.system.project.dto.StudentDto;
 import learning.management.system.project.exception.ResourceNotFoundException;
+import learning.management.system.project.service.AssignmentService;
 import learning.management.system.project.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentService studentService;
+    private AssignmentService assignmentService;
 
     @PostMapping("/add")
     public String saveStudent(@RequestBody StudentDto studentDto){
@@ -41,6 +44,12 @@ public class StudentController {
     @DeleteMapping(path = "delete-student/{id}")
     public String deleteStudent(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         return studentService.deleteStudentById(id);
+    }
+
+    @GetMapping(path = "/get-hw/{id}")
+    public List<AssignmentDTO> getAssignmentById(@PathVariable Long id) throws ResourceNotFoundException {
+        return assignmentService.getAssignmentsByStudentId(id);
+
     }
 
 

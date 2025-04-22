@@ -1,9 +1,12 @@
 package learning.management.system.project.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalTime;
-
+@Setter
+@Getter
 @Entity
 @Table(name = "sessions")
 public class SessionEntity {
@@ -19,7 +22,7 @@ public class SessionEntity {
     @Column(name = "end_time")
     private LocalTime endTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "course_id")
     private CourseEntity course;
 

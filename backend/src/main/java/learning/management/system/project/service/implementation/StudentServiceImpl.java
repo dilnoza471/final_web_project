@@ -62,8 +62,6 @@ public class StudentServiceImpl implements StudentService {
         existingStudent.setYear(studentDto.getYear());
         existingStudent.setCurrent_gpa(studentDto.getCurrent_gpa());
         existingStudent.setTotal_credits(studentDto.getTotal_credits());
-        existingStudent.setEnrollments(studentDto.getEnrollments());
-        existingStudent.setAssignments(studentDto.getAssignments());
         StudentEntity updatedStudent = studentRepository.save(existingStudent);
         return mapToDto(updatedStudent);
     }
